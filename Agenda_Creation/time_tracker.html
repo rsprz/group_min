@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>&#128339;</title>
+        <meta charset='utf-8' />
+        <link rel="stylesheet" href="time_tracker.css">
+        <script src="jquery/jquery-2.0.3.js"></script>
+        <script src="time_tracker.js"></script>
+    </head>
+    <body>
+        <form id="TaskForm">
+            <input id="Form_TaskName" title="Enter your agenda item here" type="text" placeholder="Insert agenda item name" />
+            <input id="Form_TaskDuration" title="Enter item duration in min" type="number" placeholder="Duration (min)" />
+            <!-- <input id="StartTimer" type="hidden" /> -->
+            <button id="AddItemButton" title="Add an agenda item" type="submit"></button>
+
+            <!-- <button id="TrackTimeButton" title="Start new task" type="submit"></button> -->
+        </form>
+        <div id="AgendaItemList">
+            <!--<div id="top_drop" class="drop_target"></div>-->
+        </div>
+        <button id="StartMeeting" onclick="CalculateTimeline()">Start Meeting</button>
+    </body>
+</html>

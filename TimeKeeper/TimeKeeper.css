@@ -1,0 +1,170 @@
+input:-internal-autofill-selected {
+    appearance: menulist-button;
+    background-color: background-color: rgb(55,52,71); !important;
+    background-image: none !important;
+    color: -internal-light-dark(black, white) !important;
+}
+
+
+.round-time-bar {
+  /*margin: 1rem;*/
+  overflow: hidden;
+  /*border: 3px solid green;*/
+  height: 36px;
+  /*background: linear-gradient(to bottom, #64b5f6, #1565c0);*/
+  /*background: rgb(90,90,90);*/
+  /*background: blue;*/
+
+  /* display: flex;
+  flex-direction: row;
+  align-items: left;
+  position: relative; */
+
+
+}
+.round-time-bar div {
+  height: 36px;
+  width:1px;
+  animation: roundtime calc(var(--duration) * 1s) steps(var(--duration))
+    forwards;
+  transform-origin: left center;
+  /*border: 3px solid blue;*/
+  /* background: linear-gradient(to bottom, grey, #900); */
+  background: rgb(90,90,90);
+  opacity: 0.7;
+  /*border-right: 5px solid black;*/
+}
+
+.round-time-bar[data-style="smooth"] div {
+  animation: roundtime calc(var(--duration) * 1s) linear forwards;
+  /*border-left: 5px solid black;*/
+}
+
+.round-time-bar[data-style="fixed"] div {
+  width: calc(var(--duration) * 5%);
+  border-left: 5px solid black;
+}
+
+/* .round-time-bar[data-color="blue"] div {
+  background: linear-gradient(to bottom, #64b5f6, #1565c0);
+} */
+
+@keyframes roundtime {
+  to {
+    /* More performant than `width` */
+     transform: scaleX(961);
+  }
+}
+
+#myProgress {
+  width: 100%;
+  background-color: grey;
+}
+
+#myBar {
+  width: 1%;
+  height: 30px;
+  background-color: green;
+}
+
+.timeKeeperBar{
+  position: absolute;
+  top:795px;left:0;
+  width: 0px; height: 36px;
+  background: rgb(90,90,90);
+  opacity: 0.7;
+  /* border-right: 5px solid red; */
+  border-right: 5px solid #FF9900;
+  animation-duration: 60s;
+
+}
+
+.expand {
+
+  animation-name: changeWidth;
+  animation-fill-mode: forwards;
+  animation-timing-function: linear;
+}
+
+.timeKeeperBarSplit1{
+  position: absolute;
+  top:0px;left:0;
+  width: 0px; height: 36px;
+  /* background: rgb(90,90,90); */
+  background: #545DFF;
+  opacity: 0.7;
+  /* border-right: 5px solid #e4e4e4; */
+  border-right: 5px solid rgb(102,102,110);
+  animation-duration: 15s;
+  z-index: 2;
+}
+
+.timeKeeperBarSplit2{
+  position: absolute;
+  top:0px;left:0;
+  width: 0px; height: 36px;
+  /* background: red; */
+  background: #FF9900;
+  opacity: 0.7;
+  /* border-right: 5px solid #e4e4e4; */
+  border-right: 5px solid rgb(102,102,110);
+  animation-duration: 15s;
+  z-index: 2;
+}
+
+.expandSplit {
+  animation-name: changeWidthSplit;
+  animation-fill-mode: forwards;
+  animation-timing-function: linear;
+}
+
+@keyframes changeWidth {
+  /* 25% {
+    width: 250px;
+  }*/
+  100% {
+    width: 1436px;
+  }
+}
+
+@keyframes changeWidthSplit {
+   1% {
+    /* border-right: 5px solid red; */
+    border-right: 5px solid black;
+  }
+  99%{
+    /* border-right: 5px solid red; */
+    border-right: 5px solid black;
+  }
+  100% {
+    /*width: calc(100% - 5px);*/
+    width: 100%;
+    /* border-right: 5px solid #e4e4e4; */
+    border-right: 5px solid rgb(102,102,110);
+  }
+}
+
+.addtimecontainer{
+  position: absolute;
+  top:730px;left:0;
+  width: 200px; height: 60px;
+  /* background: rgb(90,90,90); opacity: 0.7; */
+  z-index: 2;
+  animation-duration: 60s;
+}
+
+.advance {
+  animation-name: changePosition;
+  animation-fill-mode: forwards;
+  animation-timing-function: linear;
+
+}
+
+@keyframes changePosition {
+   0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(1238px);
+  }
+}

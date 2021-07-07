@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html>
+
+<!-- Changes by me: Style Added  -->
+<style>
+     .vid {
+       /*position: absolute;
+       top:5px;
+       left:10px;
+       border: 3px solid green;*/
+       width: 467px;
+       height: 265px;
+       /* background-color: rgba(196,196,196,1); */
+       }
+
+     .participantVideo{
+       /*border: 3px solid red;
+       position: absolute;
+       top:5px;
+       left:440px; */
+       width: 467px;
+       height: 265px;
+     }
+
+   </style>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>group.io - Smart Meetings</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="lib-jitsi-meet.min.js"></script>
+    <script src="example.js" ></script>
+    <link rel="stylesheet" href="Agenda_Creation/time_tracker.css">
+    <script src="Agenda_Creation/time_tracker.js"></script>
+    <script src="TimeKeeper/TimeKeeper.js"></script>
+    <link rel="stylesheet" href="TimeKeeper/TimeKeeper.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <div id="browserwindow" style="position: relative; width: 1440px; height: 900px;">
+  <!-- <div id="browserwindow" style="position: relative; border: 3px solid green; width: 1440px; height: 900px;"> -->
+
+    <div id="timerContainer" onload="startTime()"
+      style="position: absolute; top:755px;left:0;
+      width: 1440px; height: 60px;
+      /* background: rgb(90,90,90); opacity: 0.7; */
+      /* background: #545DFF; opacity: 0.7; */
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0) 19.27%, #000000 100%);
+      z-index: 1;">
+
+      <!-- Display Time -->
+      <div id="currentTimeDisplay"
+        style="position: absolute; z-index: 2; top: 14px; left: 7px;
+          color: white; font-size: 12; font-family: 'Lato', sans-serif; "></div>
+
+      <div id="endTimeDisplay"
+        style="position: absolute; z-index: 2; top: 14px; right: 7px;
+          color: white; font-size: 12; font-family: 'Lato', sans-serif;"></div>
+
+      <!-- <script>
+        // function startTime() {
+          const today = new Date();
+          let h = today.getHours();
+          let m = today.getMinutes();
+          //let s = today.getSeconds();
+          m = checkTime(m);
+          //s = checkTime(s);
+          document.getElementById('currentTimeDisplay').innerHTML =  h + ":" + m;
+          //setTimeout(startTime, 1000);
+        // }
+
+        var TotalMeetingDuration;
+        TotalMeetingDuration = parseInt(localStorage.getItem( 'GLOBALTotalDuration'));
+        var endh = 0;
+        var endm = 0;
+        endh = parseInt(h) + parseInt(endh) + parseInt(TotalMeetingDuration/60);
+        endm = parseInt(m)+ parseInt(endm) + parseInt(TotalMeetingDuration%60);
+        if(endm>59){
+          endh=parseInt(endh)+(parseInt(endm)/60);
+          endm=parseInt(endm)%60;
+        }
+        endm = checkTime(endm);
+        document.getElementById('endTimeDisplay').innerHTML =  endh.toFixed(0) + ":" + endm;
+
+        function checkTime(i) {
+          if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+          return i;
+        }
+      </script> -->
+
+
+    </div>
+
+    <div class="addtimecontainer" id="addTimeContainer">
+
+      <button id="addOne" title="+1" type="submit"
+        style="position: absolute; left: 10px; top: 0px;
+        height: 36px; width: 40px;
+        /* background-color: #2C2C2C; border-radius: 10px; */
+        background-color: #545DFF; border-radius: 10px;
+        z-index: 1;
+        cursor:pointer;
+
+        outline: none;
+        box-shadow: none;
+        border: 0;
+
+        font-family: 'Lato', sans-serif ;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 16px;
+        display: flex;
+        align-items: center;
+        padding-left:10px;
+        color: white;"/>+1
+      </button>
+
+      <button id="addFive" title="+5" type="submit"
+        style="position: absolute; left: 55px; top: 0px;
+        height: 36px; width: 40px;
+        /* background-color: #2C2C2C; border-radius: 10px; */
+        background-color: #545DFF; border-radius: 10px;
+        z-index: 1;
+        cursor:pointer;
+
+        outline: none;
+        box-shadow: none;
+        border: 0;
+
+        font-family: 'Lato', sans-serif ;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 16px;
+        display: flex;
+        align-items: center;
+        padding-left:10px;
+        color: white;"/>+5
+      </button>
+
+      <button id="next" title=">|" type="submit" onClick="resetcolor()"
+        style="position: absolute; left: 112px; top: 0px;
+        height: 36px; width: 40px;
+        /* background-color: #2C2C2C; border-radius: 10px; */
+        background-color: #545DFF; border-radius: 10px;
+        z-index: 1;
+        cursor:pointer;
+
+        outline: none;
+        box-shadow: none;
+        border: 0;
+
+        font-family: 'Lato', sans-serif ;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 16px;
+        display: flex;
+        align-items: center;
+        padding-left:10px;
+        color: white;"/>>|
+      </button>
+
+      <button id="timeWarning" title="Time Exceeded" type="submit"
+        style="position: absolute; left: 158px; top: 0px;
+        height: 36px; width: 40px;
+        /* background-color: #CE1616; border-radius: 10px; */
+        background-color: #FF9900; border-radius: 10px;
+        z-index: 1;
+        visibility: hidden;
+        /* cursor:pointer; */
+
+        outline: none;
+        box-shadow: none;
+        border: 0;
+
+        font-family: 'Lato', sans-serif ;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 16px;
+        display: flex;
+        align-items: center;
+        padding-left:10px;
+        color: white;"/>!
+      </button>
+
+      <div id='seconds-counter'
+        style="position: absolute; left: 10px; top: 40px;
+        z-index: 1;
+        visibility: hidden;
+
+        font-family: 'Lato', sans-serif ;
+        font-style: normal;
+        color: white;
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 16px;
+        display: flex;
+        align-items: center;
+        padding-left:37px;">
+      </div>
+
+
+    </div>
+
+    <button id="addFiveTotal" title="+5" type="submit"
+      style="position: absolute; right: 79px; top: 671px;
+      height: 44px; width: 40px;
+      background-color: #2C2C2C; border-radius: 10px;
+      z-index: 1;
+      cursor:pointer;
+
+      outline: none;
+      box-shadow: none;
+      border: 0;
+
+      font-family: 'Lato', sans-serif ;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 12px;
+      line-height: 16px;
+      display: flex;
+      align-items: center;
+      padding-left:10px;
+      color: white;"/>+5
+    </button>
+
+    <button id="addTenTotal" title="+10" type="submit"
+      style="position: absolute; right: 34px; top: 671px;
+      height: 44px; width: 40px;
+      background-color: #2C2C2C; border-radius: 10px;
+      z-index: 1;
+      cursor:pointer;
+
+      outline: none;
+      box-shadow: none;
+      border: 0;
+
+      font-family: 'Lato', sans-serif ;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 12px;
+      line-height: 16px;
+      display: flex;
+      align-items: center;
+      padding-left:10px;
+      color: white;"/>+10
+    </button>
+
+    <div class="videocontainer" id="largeVideoContainer"
+      style="position: absolute; top:0;left:0;
+      /* background-color: rgb(71,71,71);  */
+      /* background-color: rgba(196,196,196,1); */
+      background-color: rgb(16,16,23);
+      width: 960px; height: 795px;
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+      justify-content: center;
+      flex-wrap:wrap;">
+
+      <!-- <div id="videoLocal0" style="position: absolute; top:0;left:0; background-color: rgb(196,196,196); width: 430px; height: 265px; border: 1px solid black;">
+      </div>
+
+      <div id="videoParticipant1" style="position: absolute; top:0;left:430px; background-color: rgb(196,196,196); width: 430px; height: 265px; border: 1px solid black;">
+      </div>
+
+      <div id="videoParticipant2" style="position: absolute; top:265px;left:0px; background-color: rgb(196,196,196); width: 430px; height: 265px; border: 1px solid black;">
+      </div>
+
+      <div id="videoParticipant3" style="position: absolute; top:265px;left:430px; background-color: rgb(196,196,196); width: 430px; height: 265px; border: 1px solid black;">
+      </div>
+
+      <div id="videoParticipant4" style="position: absolute; top:530px;left:0px; background-color: rgb(196,196,196); width: 430px; height: 265px; border: 1px solid black;">
+      </div>
+
+      <div id="videoParticipant5" style="position: absolute; top:530px;left:430px; background-color: rgb(196,196,196); width: 430px; height: 265px; border: 1px solid black;">
+
+      </div> -->
+
+    </div>
+
+    <div class="agendacontainer" id="agendaContainer"
+      style="position: absolute; top:0;right:0px;
+      /* background-color: rgb(90,90,90); */
+      background-color: rgb(22,22,35);
+      width: 480px; height: 795px;">
+    <!--<div class="agendacontainer" id="agendaContainer" style="position: absolute; top:0;left:0; background-color: rgb(90,90,90); width: 1440px; height: 795px;"> -->
+      <h1 style="
+      position: absolute;
+      left: 40px;
+      top: 44px;
+
+      font-family: 'Lato', sans-serif;
+      /* font-style: normal; */
+      font-weight: 500;
+      font-size: 25px;
+      line-height: 32px;
+      display: flex;
+      align-items: center;
+      color: rgb(255, 255, 255);
+      z-index:1;
+      ">
+        AGENDA CREATION
+        </h1>
+        <div id="agendaFormPlacerTitle"
+          style=" position: absolute;
+          left: 5.45%;
+          right: 5.45%;
+          top: 44px;
+          height: 64px;
+
+          /* Grey #3 */
+          background: #272538;
+          /* Grey Outline #3 */
+          border: 1px solid #393652;
+          box-sizing: border-box;">
+        </div>
+        <div id="agendaFormPlacer"
+          style="position: absolute;
+          left: 5.45%;
+          right: 5.45%;
+          top: 108px;
+          bottom:30px;
+
+          /* Grey #3 */
+          background: #272538;
+          /* Grey Outline #3 */
+          border: 1px solid #393652;
+          box-sizing: border-box;">
+
+        </div>
+
+      <form id="agendaForm">
+        <input type="text" id="agendaTopicInput1" name="agendaItem1" placeholder="Agenda item #1"
+          style="
+          font-family: 'Lato', sans-serif ;
+          font-style: normal;
+          font-weight: 500;
+          font-size: 12px;
+          line-height: 16px;
+          display: flex;
+          color: #FFFFFF;
+
+          /*outline: none;*/
+          /*box-shadow: none;*/
+          /*border: 0;*/
+          border: 1px solid #514F6B;
+          box-sizing: border-box;
+          box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.2);
+
+          align-items: center;
+          padding-left:15px;
+          box-sizing: border-box;
+          position: absolute; right: 160px; top: 125px;
+          height: 44px; width: 281.89px;
+          /* background-color: #E7E7E7; border-radius: 10px; */
+          background-color: rgb(55,52,71); border-radius: 10px;
+          outline: none;"/>
+
+
+      <!--  <div id="agendaTimeInput1"
+          style="position: absolute; right: 38px; top: 125px;
+          height: 44px; width: 107.13px;
+          background: #E7E7E7; border-radius: 10px;">
+        </div>-->
+        <!-- Check Box Sizing for input style https://www.w3schools.com/css/css3_box-sizing.asp-->
+        <input type="number" id="agendaTimeInput1" value="timeIn1" placeholder="Minutes" min=0
+          style="
+
+          font-family: 'Lato', sans-serif ;
+          font-style: normal;
+          font-weight: 500;
+          font-size: 12px;
+          line-height: 16px;
+          display: flex;
+          color: #FFFFFF;
+
+          /*outline: none;*/
+          /*box-shadow: none;*/
+          /*border: 0;*/
+          border: 1px solid #514F6B;
+          box-sizing: border-box;
+          box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.2);
+
+          align-items: center;
+          padding-left:15px;
+          box-sizing: border-box;
+          position: absolute; right: 38px; top: 125px;
+          height: 44px; width: 107.13px;
+          /* background-color: #E7E7E7; border-radius: 10px; */
+          background-color: rgb(55,52,71); border-radius: 10px;
+          outline: none;"/>
+
+
+        <input type="text" id="agendaTopicInput2" name="agendaItem2" placeholder="Agenda item #2"
+          style="
+          font-family: 'Lato', sans-serif ;
+          font-style: normal;
+          font-weight: 500;
+          font-size: 12px;
+          line-height: 16px;
+          display: flex;
+          color: #FFFFFF;
+
+          /*outline: none;*/
+          /*box-shadow: none;*/
+          /*border: 0;*/
+          border: 1px solid #514F6B;
+          box-sizing: border-box;
+          box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.2);
+
+          align-items: center;
+          padding-left:15px;
+          box-sizing: border-box;
+          position: absolute; right: 160px; top: 180px;
+          height: 44px; width: 281.89px;
+          /* background-color: #E7E7E7; border-radius: 10px; */
+          background-color: rgb(55,52,71); border-radius: 10px;
+          outline: none;"/>
+
+
+        <input type="number" id="agendaTimeInput2" value="timeIn2" placeholder="Minutes" min=0
+          style="
+
+          font-family: 'Lato', sans-serif ;
+          font-style: normal;
+          font-weight: 500;
+          font-size: 12px;
+          line-height: 16px;
+          display: flex;
+          color: #FFFFFF;
+
+          /*outline: none;*/
+          /*box-shadow: none;*/
+          /*border: 0;*/
+          border: 1px solid #514F6B;
+          box-sizing: border-box;
+          box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.2);
+
+          align-items: center;
+          padding-left:15px;
+          box-sizing: border-box;
+          position: absolute; right: 38px; top: 180px;
+          height: 44px; width: 107.13px;
+          /* background-color: #E7E7E7; border-radius: 10px; */
+          background-color: rgb(55,52,71); border-radius: 10px;
+          outline: none;"/>
+
+
+        <input type="text" id="agendaTopicInput3" name="agendaItem3" placeholder="Agenda item #3"
+          style="
+          font-family: 'Lato', sans-serif ;
+          font-style: normal;
+          font-weight: 500;
+          font-size: 12px;
+          line-height: 16px;
+          display: flex;
+          color: #FFFFFF;
+
+          /*outline: none;*/
+          /*box-shadow: none;*/
+          /*border: 0;*/
+          border: 1px solid #514F6B;
+          box-sizing: border-box;
+          box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.2);
+
+          align-items: center;
+          padding-left:15px;
+          box-sizing: border-box;
+          position: absolute; right: 160px; top: 235px;
+          height: 44px; width: 281.89px;
+          /* background-color: #E7E7E7; border-radius: 10px; */
+          background-color: rgb(55,52,71); border-radius: 10px;
+          outline: none;"/>
+
+
+        <input type="number" id="agendaTimeInput3" value="timeIn3" placeholder="Minutes" min=0
+          style="
+
+          font-family: 'Lato', sans-serif ;
+          font-style: normal;
+          font-weight: 500;
+          font-size: 12px;
+          line-height: 16px;
+          display: flex;
+          color: #FFFFFF;
+
+          /*outline: none;*/
+          /*box-shadow: none;*/
+          /*border: 0;*/
+          border: 1px solid #514F6B;
+          box-sizing: border-box;
+          box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.2);
+
+          align-items: center;
+          padding-left:15px;
+          box-sizing: border-box;
+          position: absolute; right: 38px; top: 235px;
+          height: 44px; width: 107.13px;
+          /* background-color: #E7E7E7; border-radius: 10px; */
+          background-color: rgb(55,52,71); border-radius: 10px;
+          outline: none;"/>
+
+
+        <input type="text" id="agendaTopicInput4" name="agendaItem4" placeholder="Agenda item #4"
+          style="
+          font-family: 'Lato', sans-serif ;
+          font-style: normal;
+          font-weight: 500;
+          font-size: 12px;
+          line-height: 16px;
+          display: flex;
+          color: #FFFFFF;
+
+          /*outline: none;*/
+          /*box-shadow: none;*/
+          /*border: 0;*/
+          border: 1px solid #514F6B;
+          box-sizing: border-box;
+          box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.2);
+
+          align-items: center;
+          padding-left:15px;
+          box-sizing: border-box;
+          position: absolute; right: 160px; top: 290px;
+          height: 44px; width: 281.89px;
+          /* background-color: #E7E7E7; border-radius: 10px; */
+          background-color: rgb(55,52,71); border-radius: 10px;
+          outline: none;"/>
+
+
+        <input type="number" id="agendaTimeInput4" value="timeIn4" placeholder="Minutes" min=0
+          style="
+
+          font-family: 'Lato', sans-serif ;
+          font-style: normal;
+          font-weight: 500;
+          font-size: 12px;
+          line-height: 16px;
+          display: flex;
+          color: #FFFFFF;
+
+          /*outline: none;*/
+          /*box-shadow: none;*/
+          /*border: 0;*/
+          border: 1px solid #514F6B;
+          box-sizing: border-box;
+          box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.2);
+
+          align-items: center;
+          padding-left:15px;
+          box-sizing: border-box;
+          position: absolute; right: 38px; top: 290px;
+          height: 44px; width: 107.13px;
+          /* background-color: #E7E7E7; border-radius: 10px; */
+          background-color: rgb(55,52,71); border-radius: 10px;
+          outline: none;"/>
+
+        <button id="startMeetingButton" title="Start the Meeting" type="submit"
+          style="position: absolute; left: 38px; top: 363px;
+          height: 44px; width: 144px;
+          /* background-color: #000000; border-radius: 10px; */
+          background-color: #545DFF;
+          border-top-left-radius: 10px; border-bottom-left-radius: 10px;
+          cursor:pointer;
+
+          outline: none;
+          box-shadow: none;
+          border: 0;
+
+          font-family: 'Lato', sans-serif ;
+          font-style: normal;
+          font-weight: 500;
+          font-size: 12px;
+          line-height: 16px;
+          display: flex;
+          align-items: center;
+          padding-left:15px;
+          color: #FFFFFF;"/>Start the Meeting
+        </button>
+        <!--<input type="button" id="startMeetingButton" value="Start the Meeting">
+        <br>-->
+      </form>
+
+      <!-- <button id="restart-button" onclick="countdown()" -->
+      <button id="restart-button" onclick="start()"
+
+        style="position: absolute; left: 182px; top: 363px;
+        height: 44px; width: 10px;
+        /* background-color: #000000; border-radius: 10px; */
+        background-color: #545DFF;
+        border-top-right-radius: 10px; border-bottom-right-radius: 10px;
+        border-left: 1px solid white;
+        cursor:pointer;
+
+        outline: none;
+        box-shadow: none;
+        border: 0;
+
+        font-family: 'Lato', sans-serif ;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 16px;
+        display: flex;
+        align-items: center;
+        padding-left:15px;
+        color: #FFFFFF;"/>
+        <!-- Start TimeKeeper -->
+      </button>
+
+      <!-- <button id="start-button" onclick="start()"
+
+        style="position: absolute; right: 38px; top: 563px;
+        height: 44px; width: 154px;
+        background-color: #000000; border-radius: 10px;
+        cursor:pointer;
+
+        font-family: 'Lato', sans-serif ;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 16px;
+        display: flex;
+        align-items: center;
+        padding-left:15px;
+        color: #FFFFFF;"/>Start
+      </button> -->
+
+      <!--<form id="TaskForm" style="position: absolute; top: 440px; left: 138.11px;">
+          <input id="Form_TaskName" title="Enter your agenda item here" type="text" placeholder="Insert agenda item name" />
+          <input id="Form_TaskDuration" title="Enter item duration in min" type="number" placeholder="Duration (min)" />
+          <button id="AddItemButton" title="Add an agenda item" type="submit"></button>
+      </form>-->
+
+    </div>
+
+    <div class="timekeepercontainer" id="timeKeeperContainer"
+      style="position: absolute; top:795px;left:0;
+      /* background-color: rgb(231,231,231); */
+      background-color: rgb(57,57,67);
+      width: 1440px; height: 36px; z-index:1;">
+      <div id="AgendaItemList">
+          <!--<div id="top_drop" class="drop_target"></div>-->
+      </div>
+    </div>
+
+    <!-- <div class="round-time-bar" data-style="smooth" style="--duration: 30; position: absolute; top:795px;left:0; width: 1440px; height: 36px;">
+      <div></div>
+      <div id="vl" style="border-righ: 6px solid green;height: 30px;width: 10px; position: absolute; top:0; "></div>
+    </div> -->
+
+    <!-- Full Bar: -->
+    <!-- <div class="timeKeeperBar"></div> -->
+
+    <!-- <div class="timeKeeperBar" style="animation-duration: calc(var(--SavedTotalDuration) *60s);" ></div> -->
+    <!-- <div class="timeKeeperBarSplit1"></div>
+    <div class="timeKeeperBarSplit2"></div>
+    <div class="timeKeeperBarSplit3"></div>
+    <div class="timeKeeperBarSplit4"></div> -->
+
+    <script>
+      // var SavedTotalDuration;
+      //SavedTotalDuration = parseInt(localStorage.getItem( 'GLOBALTotalDuration'));
+      //window.alert("TotalDuration: "+ SavedTotalDuration);
+    </script>
+
+    <div class="controlscontainer" id="controlContainer" style="position: absolute; top:831px;left:0;background-color: rgb(35,33,48); width: 1440px; height: 69px;">
+
+        <img src="/images/microphone.png" width="32" height="32" style="position: absolute; left: 18px; top: 14px;
+        cursor:pointer;">
+      <a href="#" onclick="unload()">
+        <img src="/images/telephone.png" width="32" height="32" style="position: absolute; right: 29px; top: 20px;
+        cursor:pointer;"></a>
+      <a href="#" onclick="switchVideo()">
+        <img src="/images/camera.png" width="32" height="32" style="position: absolute; left: 76px; top: 15px;
+        cursor:pointer;"></a>
+      <div id="audioOutputSelectWrapper" style="display: none; position: absolute; visibility:hidden;">
+          <select id="audioOutputSelect" onchange="changeAudioOutput(this)"></select>
+    </div>
+
+    </div>
+
+
+
+    <!-- <video id="localVideo" autoplay="true"></video> -->
+    <!--<audio id="localAudio" autoplay="true" muted="true"></audio>-->
+  </div>
+
+</body>
+</html>
